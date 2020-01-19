@@ -1,4 +1,8 @@
 import React, { useState } from "react"
+// importing Context Objects
+import { ProductContext } from "./contexts/ProductContext"
+import { CartContext } from "./contexts/CartContext"
+
 import { Route } from "react-router-dom"
 import data from "./data"
 
@@ -16,18 +20,29 @@ function App() {
     setCart(cart => [...cart, item])
   }
 
+  const removeItem = remove => {
+    // remove the given item from the cart
+    setCart(cart => cart.filter(item => item.id !== remove))
+  }
+
   return (
     <div className="App">
-      <Navigation cart={cart} />
+      <ProductContext.Provider value={{ products, addItem }}>
+        <CartContext.Provider value={{ cart, removeItem }}>
+          <Navigation value={{ cart }} />
 
-      {/* Routes */}
-      <Route
-        exact
-        path="/"
-        render={() => <Products products={products} addItem={addItem} />}
-      />
+          {/* Routes */}
+          <Route
+            exact
+            path="/"
+            component={Products}
+            // render={() => <Products products={products} addItem={addItem} />}
+            // ^^no longer needed when passing props through ContextObject
+          />
 
-      <Route path="/cart" render={() => <ShoppingCart cart={cart} />} />
+          <Route path="/cart" component={ShoppingCart} />
+        </CartContext.Provider>
+      </ProductContext.Provider>
     </div>
   )
 }
