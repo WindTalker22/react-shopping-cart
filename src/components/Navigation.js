@@ -1,15 +1,22 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+// importing useContext hook
+import React, { useContext } from "react"
 
-const Navigation = props => {
-	return (
-		<div className="navigation">
-			<NavLink to="/">Products</NavLink>
-			<NavLink to="/cart">
-				Cart <span>{props.cart.length}</span>
-			</NavLink>
-		</div>
-	);
-};
+// importing ContextObject
+import { CartContext } from "../contexts/CartContext"
 
-export default Navigation;
+import { NavLink } from "react-router-dom"
+
+const Navigation = () => {
+  const { cart } = useContext(CartContext)
+
+  return (
+    <div className="navigation">
+      <NavLink to="/">Products</NavLink>
+      <NavLink to="/cart">
+        Cart <span>{cart.length}</span>
+      </NavLink>
+    </div>
+  )
+}
+
+export default Navigation
